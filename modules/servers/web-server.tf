@@ -44,14 +44,14 @@ resource "aws_autoscaling_group" "web-server" {
 
   tag {
     key = "Name"
-    value = "terraform-web-server-asg"
+    value = "${var.cluster_name}-terraform-web-server-asg"
     propagate_at_launch = true
   }
 }
 
 
 resource "aws_lb" "web-server" {
-  name = "web-server-alb"
+  name = "${var.cluster_name}-web-server-alb"
   load_balancer_type = "application"
   subnets = data.terraform_remote_state.globals.outputs.subnet_ids
   security_groups = [aws_security_group.alb.id]
@@ -93,7 +93,7 @@ resource "aws_lb_listener_rule" "alb" {
 }
 
 resource "aws_lb_target_group" "alb" {
-  name = "web-server-alb-target"
+  name = "${var.cluster_name}-web-server-alb-target"
   port = var.server_port
   protocol = "HTTP"
   vpc_id = data.terraform_remote_state.globals.outputs.terraform_vpc_id

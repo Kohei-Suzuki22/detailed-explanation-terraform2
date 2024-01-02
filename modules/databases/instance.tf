@@ -1,6 +1,6 @@
 resource "aws_db_instance" "mysql" {
   # vpc_security_group_ids = []
-  identifier_prefix = "terraform"
+  identifier = "${var.cluster_name}-terraform"
   engine = "mysql"
   allocated_storage = 10
   instance_class = "db.t2.micro"
@@ -13,11 +13,11 @@ resource "aws_db_instance" "mysql" {
 }
 
 resource "aws_db_subnet_group" "mysql" {
-  name = "mysql-subnet-group"
+  name = "${var.cluster_name}-mysql-subnet-group"
   subnet_ids = data.terraform_remote_state.globals.outputs.subnet_ids
   
   tags = {
-    "Name" = "mysql-subnet-group"
+    "Name" = "${var.cluster_name}-mysql-subnet-group"
   }
 }
 
