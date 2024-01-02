@@ -15,7 +15,8 @@ resource "aws_launch_configuration" "web-server" {
 
   security_groups = [aws_security_group.web-server.id]
 
-  user_data = templatefile("scripts/user-data.sh", {
+  # templatefileで、module内のpathを参照する際は、${path.module}を使わないといけない。
+  user_data = templatefile("${path.module}/scripts/user-data.sh", {
     server_port = var.server_port
     db_address = data.terraform_remote_state.databases.outputs.address
     db_port = data.terraform_remote_state.databases.outputs.port
