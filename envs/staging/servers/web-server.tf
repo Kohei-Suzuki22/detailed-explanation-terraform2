@@ -12,7 +12,6 @@ resource "aws_launch_configuration" "web-server" {
   image_id = "ami-07c589821f2b353aa"
   instance_type = "t2.micro"
 
-  associate_public_ip_address = true
 
   security_groups = [aws_security_group.web-server.id]
 
