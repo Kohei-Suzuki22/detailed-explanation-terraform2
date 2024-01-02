@@ -25,3 +25,21 @@ variable "server_port" {
   type = number
   default = 8080
 }
+
+variable "instance_type" {
+  description = "The type of EC2 instances to run (e.g. t2.micro)"
+  type = string
+  default = "t2.micro"
+}
+
+variable "autoscaling_min_size" {
+  description = "The minimum number of EC2 Instances in the ASG"
+  type = number
+  default = 2
+}
+
+variable "autoscaling_max_size" {
+  description = "The maximum number of EC2 Instances in the ASG"
+  type = number
+  default = 2
+}

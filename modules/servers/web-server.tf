@@ -10,7 +10,7 @@
 
 resource "aws_launch_configuration" "web-server" {
   image_id = "ami-07c589821f2b353aa"
-  instance_type = "t2.micro"
+  instance_type = var.instance_type
 
 
   security_groups = [aws_security_group.web-server.id]
@@ -35,8 +35,8 @@ resource "aws_autoscaling_group" "web-server" {
   target_group_arns = [aws_lb_target_group.alb.arn]
   health_check_type = "ELB"
 
-  min_size = 2
-  max_size = 10
+  min_size = var.autoscaling_min_size
+  max_size = var.autoscaling_max_size
 
   instance_refresh {
     strategy = "Rolling"
