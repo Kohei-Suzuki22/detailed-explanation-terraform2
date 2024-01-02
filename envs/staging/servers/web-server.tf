@@ -15,11 +15,11 @@ resource "aws_launch_configuration" "web-server" {
 
   security_groups = [aws_security_group.web-server.id]
 
-  user_data = <<-EOF
-                  #!/bin/bash
-                  echo "Hello, World" > index.html
-                  nohup busybox httpd -f -p ${var.server_port} &
-                 EOF
+  user_data = templatefile("scripts/user-data.sh", {
+    server_port = var.server_port
+    db_address = data.terraform_remote_state.databases.outputs.address
+    db_port = data.terraform_remote_state.databases.outputs.port
+  })
   
   lifecycle {
     create_before_destroy = true
