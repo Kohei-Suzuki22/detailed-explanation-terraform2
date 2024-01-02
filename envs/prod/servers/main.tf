@@ -10,3 +10,24 @@ module "servers" {
   autoscaling_min_size = 2
   autoscaling_max_size = 2
 }
+
+
+resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
+  scheduled_action_name = "scale-out-during-business-hours"
+  autoscaling_group_name = module.servers.autoscaling_group_name
+  min_size = 2
+  max_size = 4
+  desired_capacity = 4
+  time_zone = "Asia/Tokyo"
+  recurrence = "0 9 * * *"
+}
+
+resource "aws_autoscaling_schedule" "scale_in_at_night" {
+  scheduled_action_name = "scal-in-at-night"
+  autoscaling_group_name = module.servers.autoscaling_group_name
+  min_size = 2
+  max_size = 4
+  desired_capacity = 2
+  time_zone = "Asia/Tokyo"
+  recurrence = "0 17 * * *"
+}
