@@ -14,11 +14,10 @@ resource "aws_launch_configuration" "web-server" {
 
   associate_public_ip_address = true
 
-  security_groups = [aws_security_group.alb.id]
+  security_groups = [aws_security_group.web-server.id]
 
   user_data = <<-EOF
                   #!/bin/bash
-                  echo "hello"
                   echo "Hello, World" > index.html
                   nohup busybox httpd -f -p ${var.server_port} &
                  EOF
@@ -26,6 +25,7 @@ resource "aws_launch_configuration" "web-server" {
   lifecycle {
     create_before_destroy = true
   }
+
 }
 
 resource "aws_autoscaling_group" "web-server" {
@@ -47,20 +47,13 @@ resource "aws_autoscaling_group" "web-server" {
 }
 
 
-resource "aws_security_group" "alb" {
-  name = "web-server-alb"
+resource "aws_security_group" "web-server" {
+  name = "web-server"
   vpc_id = data.terraform_remote_state.globals.outputs.terraform_vpc_id
 
   ingress {
     from_port = 80
     to_port = 80
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port = 443
-    to_port = 443
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -80,7 +73,7 @@ resource "aws_security_group" "alb" {
   }
 
   tags = {
-    "Name" : "web-server-alb"
+    "Name" : "web-server"
   }
 
 }
