@@ -60,7 +60,7 @@ resource "aws_lb" "web-server" {
 
 resource "aws_lb_listener" "web-server" {
   load_balancer_arn = aws_lb.web-server.arn
-  port = 80
+  port = local.http_port
   protocol = "HTTP"
 
   default_action {
