@@ -10,3 +10,14 @@ module "servers" {
   autoscaling_min_size = 2
   autoscaling_max_size = 2
 }
+
+
+resource "aws_security_group_rule" "staging_alb_sg_ingress" {
+  security_group_id = module.servers.alb-sg-id
+  type = "ingress"
+
+  from_port = 443
+  to_port = 443
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+}
